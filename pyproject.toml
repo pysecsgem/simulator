@@ -8,7 +8,7 @@ authors = ["Benjamin Parzella <bparzella@gmail.com>"]
 sgsim = "secsgem_simulator.cli:main"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7"
 lupa = "^1.13"
 appdirs = "^1.4.4"
 
