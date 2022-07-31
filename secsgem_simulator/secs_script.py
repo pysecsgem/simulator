@@ -49,7 +49,7 @@ class SecsgemPackages:  # pylint: disable=too-few-public-methods
             if version_interface.matches(version):
                 return version_interface(package_version_dir)
 
-        raise Exception(f"Unsupported secsgem version '{version}'")
+        raise ValueError(f"Unsupported secsgem version '{version}'")
 
     def _enable_package_site_path(self, package_version_path: pathlib.Path):
         """Enable the package site path in sys.path.

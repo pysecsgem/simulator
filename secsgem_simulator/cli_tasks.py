@@ -123,7 +123,7 @@ class StartServerCLITask(CLITask):
         pid = os.fork()
 
         # exit if we are the parent process
-        if not pid == 0:
+        if pid != 0:
             sys.exit()
 
         # setup child process
@@ -134,7 +134,7 @@ class StartServerCLITask(CLITask):
         pid2 = os.fork()
 
         # exit if we are the intermediate process
-        if not pid2 == 0:
+        if pid2 != 0:
             sys.exit()  # First child exists
 
         # start command server

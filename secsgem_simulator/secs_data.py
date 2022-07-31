@@ -191,7 +191,7 @@ class SECSData(abc.ABC):
         data_type = cls._decode_peek_item_type(data)
 
         if data_type not in cls.subclasses_by_hsms:
-            raise Exception(f"Unknown data type '{data_type}'")
+            raise TypeError(f"Unknown data type '{data_type}'")
 
         return cls.subclasses_by_hsms[data_type].decode(data)
 
@@ -306,7 +306,7 @@ class SECSData(abc.ABC):
 
     @classmethod
     def _invalid_type_exception(cls, data: typing.Any) -> Exception:
-        raise Exception(f"Invalid value '{data}' of '{data.__class__.__name__}' for '{cls.__name__}'")
+        raise TypeError(f"Invalid value '{data}' of '{data.__class__.__name__}' for '{cls.__name__}'")
 
 
 class SECSFunction:

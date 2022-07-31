@@ -24,7 +24,7 @@ class SECSDataL(SECSData):
         if isinstance(value, list):
             return value
 
-        raise Exception(f"Invalid value '{value}' for type '{self.__class__.__name__}'")
+        raise ValueError(f"Invalid value '{value}' for type '{self.__class__.__name__}'")
 
     @classmethod
     def _read_sml_token(cls, parser: SMLParser) -> SECSData:

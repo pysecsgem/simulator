@@ -2,7 +2,7 @@
 import io
 
 
-class SMLParseError(BaseException):
+class SMLParseError(Exception):
     """Exception class for SML parse error."""
 
     def __init__(self, message: str, token: "SMLToken"):

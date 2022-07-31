@@ -315,7 +315,7 @@ class ScriptHSMSConnection01(ScriptHSMSConnection):  # pylint: disable=too-many-
                     return result
 
             time.sleep(wait)
-        raise Exception("Reply not received within timeout.")
+        raise TimeoutError("Reply not received within timeout.")
 
     def _wait_for_system_id(self, system_id: int, timeout: float = 5.0, wait: float = 0.25) -> typing.Any:
         """Wait until system id is present in responses.

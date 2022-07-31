@@ -27,7 +27,7 @@ class SECSDataA(SECSData):
 
         """
         if not isinstance(value, (str, bytes)):
-            raise Exception
+            raise ValueError(f"Value type {type(value)} not allowed, only 'str' or 'bytes'")
 
         return value
 
