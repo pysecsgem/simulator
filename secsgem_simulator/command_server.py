@@ -114,7 +114,7 @@ class CommandServer:  # pylint: disable=too-few-public-methods
             try:
                 result = task.run()
                 connection.send(result.data)
-            except BaseException as exc:  # pylint: disable=broad-except
+            except Exception as exc:  # pylint: disable=broad-except
                 connection.send({"error": str(exc), "stack": traceback.format_exc()})
                 traceback.print_exc()
                 continue
