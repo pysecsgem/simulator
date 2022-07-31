@@ -1,5 +1,6 @@
 """SML parser."""
 import io
+import typing
 
 
 class SMLParseError(Exception):
@@ -178,37 +179,63 @@ class SMLParser:
                 return
 
             if current_delimiter:
-                if char == current_delimiter:
-                    current_token += char
-                    if current_token:
-                        self._tokens.append(SMLToken(current_token, location.line, location.column, self))
-                        current_token = ""
-                    location.reset()
-                    current_delimiter = ""
-                    continue
+                current_delimiter, current_token = self._parser_handle_post_delimiter(char,
+                                                                                      current_delimiter,
+                                                                                      current_token,
+                                                                                      location)
 
-                current_token += char
                 continue
 
             if char in self.whitespaces:
-                if current_token:
-                    self._tokens.append(SMLToken(current_token, location.line, location.column, self))
-                    current_token = ""
-                location.reset()
+                current_token = self._parser_handle_whitespace(current_token, location)
                 continue
 
             if char in self.operators:
-                if current_token:
-                    self._tokens.append(SMLToken(current_token, location.line, location.column, self))
-                    current_token = ""
-                self._tokens.append(SMLToken(char, self._line, self._col, self))
-                location.reset()
+                current_token = self._parser_handle_operator(char, current_token, location)
                 continue
 
             if char in self.literal_delimiter:
                 current_delimiter = char
 
             current_token += char
+
+    def _parser_handle_operator(self, char: str, current_token: str, location: "_SMLParserLocation") -> str:
+        if current_token:
+            self._tokens.append(SMLToken(current_token, location.line, location.column, self))
+            current_token = ""
+
+        self._tokens.append(SMLToken(char, self._line, self._col, self))
+        location.reset()
+
+        return current_token
+
+    def _parser_handle_whitespace(self, current_token: str, location: "_SMLParserLocation") -> str:
+        if current_token:
+            self._tokens.append(SMLToken(current_token, location.line, location.column, self))
+            current_token = ""
+
+        location.reset()
+
+        return current_token
+
+    def _parser_handle_post_delimiter(self,
+                                      char: str,
+                                      current_delimiter: str,
+                                      current_token: str,
+                                      location: "_SMLParserLocation") -> typing.Tuple[str, str]:
+        if char == current_delimiter:
+            current_token += char
+
+            if current_token:
+                self._tokens.append(SMLToken(current_token, location.line, location.column, self))
+                current_token = ""
+
+            location.reset()
+            current_delimiter = ""
+        else:
+            current_token += char
+
+        return current_delimiter, current_token
 
     def get_token(self) -> SMLToken:
         """Get the next available token.
